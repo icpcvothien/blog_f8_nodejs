@@ -27,8 +27,11 @@
     "express-handlebars": "^9.0.2"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
     "morgan": "^1.12.1",
     "nodemon": "^1.14.10",
+    "prettier": "^3.9.10",
     "sass": "^1.105.1"
   }
 }
