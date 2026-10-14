@@ -1,13 +1,18 @@
+const Course=require('../models/Course');
 
 class SiteController {
     
     // get home 
-    index(req, res){
-        res.render('home');
+    async index(req, res, next){
+        try {
+            const courses = await Course.find({});
+            return res.json(courses);
+        } catch (err) {
+            return next(err);
+        }
     }
     // get search 
     search(req, res){
-        res.send("Trang tim kiem ne chi Trang")
         res.render('search');
     }
 }
