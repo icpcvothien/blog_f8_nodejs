@@ -1,6 +1,4 @@
 
-
-
 const newsRoute=require('./news');
 const siteRoute=require('./site');
 // control toan bo routes 

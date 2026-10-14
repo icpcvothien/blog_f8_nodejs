@@ -1,15 +1,18 @@
 const Course=require('../models/Course');
-
+const {multiMongooseToObject}=require('../../util/mongoose');
 class SiteController {
     
     // get home 
     async index(req, res, next){
-        try {
-            const courses = await Course.find({});
-            return res.json(courses);
-        } catch (err) {
-            return next(err);
-        }
+        Course.find({})
+        .then(courses=> {
+            // fix bug: document  to normal object
+            
+            res.render('home', {
+                courses: multiMongooseToObject(courses)
+            });
+        })
+        .catch(err=> next(err));
     }
     // get search 
     search(req, res){
