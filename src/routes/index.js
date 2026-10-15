@@ -1,13 +1,15 @@
-
-const newsRoute=require('./news');
-const siteRoute=require('./site');
+const meRouter=require('./me')
+const newsRouter=require('./news');
+const siteRouter=require('./site');
 const coursesRouter=require('./courses')
 // control toan bo routes 
 
 function route(app) {
-    app.use('/news', newsRoute);
-    app.use('/', siteRoute);
+    app.use('/me', meRouter);
+    app.use('/news', newsRouter);
     app.use('/courses', coursesRouter);
+    app.use('/', siteRouter);
+    
 }
 
 module.exports = route;
