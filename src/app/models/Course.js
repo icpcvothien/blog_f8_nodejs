@@ -7,7 +7,8 @@ const Course=new Schema({
     description: {type:String, maxLength:600},
     image: {type:String, maxLength:255},
     createdAt: {type:Date, default:Date.now},
-    updatedAt: {type:Date, default:Date.now}
+    updatedAt: {type:Date, default:Date.now},
+    slug : {type: String}
 });
 
 module.exports=mongoose.model('Course', Course); 
