@@ -71,6 +71,20 @@ class CourseController {
             .then(()=> res.redirect('/me/stored/courses'))
             .catch(next);
     }
+    // [PATCH] /:id/restore
+    restore(req, res, next) {
+    Course.updateOne(
+        {
+            _id: req.params.id,
+            deletedAt: { $ne: null },
+        },
+        {
+            $set: { deletedAt: null },
+        }
+    )
+        .then(() => res.redirect('/me/stored/courses'))
+        .catch(next);
+}
 }
 
 module.exports = new CourseController();

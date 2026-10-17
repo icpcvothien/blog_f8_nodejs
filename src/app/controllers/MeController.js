@@ -12,7 +12,14 @@ class MeController {
             .catch(err=>next(err));
         
     }
-
+    trashCourses(req, res, next){
+        Course.find({ deletedAt: { $ne: null } })
+        .sort({ deletedAt: -1 })
+            .then(courses=>res.render('me/trash-courses', {
+                courses : multiMongooseToObject(courses)
+            }))
+            .catch(err=>next(err));
+    }
 }
 
 module.exports = new MeController();
