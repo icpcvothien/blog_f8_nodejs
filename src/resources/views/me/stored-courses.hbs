@@ -19,10 +19,57 @@
         <td>{{this.createdAt}}</td>
         <td>
             <a href="/courses/{{this._id}}/edit" class="btn btn-link">Sửa</a>
-            <a href="" class="btn btn-link">Xóa</a>
+            <a  href="" class="btn btn-link" 
+            data-id="{{this._id}}" data-bs-toggle="modal" data-bs-target="#delete-course-modal" >Xóa</a>
         </td>
         </tr>
         {{/each}}
     </tbody>
     </table>
 </div>
+
+{{!-- Conform delete course --}}
+<div id="delete-course-modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa khóa học?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn chắc chắn muốn xóa khóa học này?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-course" type="button" class="btn btn-danger">Xóa bỏ</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- delete hidden form --}}
+<form name="delete-course-form" method="post" >
+
+</form>
+<script>
+    var courseId;
+    var deleteForm=document.forms['delete-course-form'];
+    var deleteModal = document.getElementById('delete-course-modal');
+    var btnDeleteCourse=document.getElementById('btn-delete-course');
+
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        // Nút "Xóa" vừa được bấm
+        var button = event.relatedTarget;
+
+        // Lấy ID khóa học từ thuộc tính data-id
+        courseId = button.getAttribute('data-id');
+
+        console.log(courseId);
+    });
+    
+    btnDeleteCourse.onclick=function(){
+        deleteForm.action='/courses/' + courseId + '?_method=DELETE';
+        deleteForm.submit();
+    };
+</script>
