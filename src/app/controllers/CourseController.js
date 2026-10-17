@@ -23,7 +23,7 @@ class CourseController {
 
     // [POST] /course/store
     async store(req, res, next){
-        const formData=req.body;
+        const formData={...req.body};
         formData.image=`https://img.youtube.com/vi/${formData.videoId}/hqdefault.jpg`
         const baseSlug = slugify(formData.name || '', {
             lower: true,
@@ -59,6 +59,7 @@ class CourseController {
             .then(()=>res.redirect('/me/stored/courses'))
             .catch(next);
     }
+    // [DELETE] /courses/:id/
     destroy(req, res, next){
         Course.updateOne(
             {_id: req.params.id,
@@ -66,6 +67,16 @@ class CourseController {
             }, 
             {
                 $set: {deletedAt: new Date()},
+            }
+        )
+            .then(()=> res.redirect('/me/stored/courses'))
+            .catch(next);
+    }
+    // [DELETE] /courses/:id/forceDelete
+    forceDestroy(req, res, next){
+        Course.deleteOne(
+            {   _id: req.params.id,
+                deletedAt: { $ne: null },
             }
         )
             .then(()=> res.redirect('/me/stored/courses'))
@@ -82,7 +93,7 @@ class CourseController {
             $set: { deletedAt: null },
         }
     )
-        .then(() => res.redirect('/me/stored/courses'))
+        .then(() => res.redirect('/me/trash/courses'))
         .catch(next);
 }
 }
