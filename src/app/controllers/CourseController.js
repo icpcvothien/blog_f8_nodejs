@@ -60,7 +60,14 @@ class CourseController {
             .catch(next);
     }
     destroy(req, res, next){
-        Course.deleteOne({_id: req.params.id})
+        Course.updateOne(
+            {_id: req.params.id,
+            deletedAt: null,
+            }, 
+            {
+                $set: {deletedAt: new Date()},
+            }
+        )
             .then(()=> res.redirect('/me/stored/courses'))
             .catch(next);
     }

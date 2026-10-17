@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const { default: _default } = require('slugify');
 const Schema=mongoose.Schema;
 
 
@@ -8,7 +9,8 @@ const Course=new Schema({
     image: {type:String, maxLength:255},
     slug : {type: String},
     videoId : {type: String, required: true},
-    level : {type: String}
+    level : {type: String},
+    deletedAt: {type:Date, default: null}
 }, {
     timestamps: true,
 });
