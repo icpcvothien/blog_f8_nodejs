@@ -14,7 +14,7 @@
             <option value="delete">Xóa</option>
         </select>
         {{!-- Chọn ít nhất một cái thì nó sáng lên --}}
-        <button class="btn btn-primary btn-sm disabled check-all-submit-btn">Thực hiện</button>
+        <button class="btn btn-primary btn-sm  check-all-submit-btn" disabled>Thực hiện</button>
       </div>
     </div>
     <table class="table mt-4">
@@ -139,13 +139,14 @@
     function renderCheckAllSubmitBtn(){
       var checkedCount=document.querySelectorAll('input[name="courseIds[]"]:checked').length;
       if (checkedCount){
-        checkAllSubmitBtn.classList.remove('disabled');
+        checkAllSubmitBtn.disabled=false;
       }
       else {
-        checkAllSubmitBtn.classList.add('disabled');
+        checkAllSubmitBtn.disabled=true;
       }
     }
     // Khi nút "Thưc hiện" disabled thì ko được submit 
+    /*
     containerForm.addEventListener('submit', (e)=>{
       
       console.log('Submit is clicked');
@@ -156,6 +157,7 @@
         e.preventDefault();
       }
     })
+    */
     // màn hình console chrome ! 
     console.log(checkAllSubmitBtn);
     console.log(containerForm);
