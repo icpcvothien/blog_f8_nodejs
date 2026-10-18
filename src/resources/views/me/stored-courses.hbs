@@ -1,14 +1,28 @@
-<div class="mt-4">
+<form class="mt-4" name="container-form" method="post" action="/courses/handle-form-actions" >
     <div>
       {{#if trashCount}}
       <a href="/me/trash/courses">Thùng rác [{{this.trashCount}}] </a>
       {{/if}}
       <h3>KHÓA HỌC CỦA TÔI</h3>
-      
+      <div class="mt-4 ml-4 d-flex align-items-center">
+        <div class="form-field">
+          <input type="checkbox" id="checkbox-all" class="check" />
+          <label for="checkbox-all">Chọn tất cả</label>
+        </div>
+        <select class="form-control form-select mt-2 mb-2 checkbox-select-all-options" name="action" required>
+            <option value="">-- Chọn hành động --</option>
+            <option value="delete">Xóa</option>
+        </select>
+        {{!-- Chọn ít nhất một cái thì nó sáng lên --}}
+        <button class="btn btn-primary btn-sm disabled check-all-submit-btn">Thực hiện</button>
+      </div>
     </div>
     <table class="table mt-4">
     <thead>
         <tr>
+        <th scope="col">
+            <span class="visually-hidden">Chọn khóa học</span>
+        </th>          
         <th scope="col">#</th>
         <th scope="col">Tên khóa học</th>
         <th scope="col">Trình độ</th>
@@ -19,6 +33,15 @@
     <tbody>
         {{#each courses}}
         <tr>
+        <td>
+          <input
+              type="checkbox"
+              class="form-check-input course-checkbox"
+              name="courseIds[]"
+              value="{{this._id}}"
+              aria-label="Chọn khóa học {{this.name}}"
+          >
+        </td>
         <th scope="row">{{sum @index 1}}</th>
         <td>{{this.name}}</td>
         <td>{{this.level}}</td>
@@ -39,7 +62,7 @@
         {{/each}}
     </tbody>
     </table>
-</div>
+</form>
 
 {{!-- Conform delete course --}}
 <div id="delete-course-modal" class="modal" tabindex="-1">
@@ -66,13 +89,21 @@
 
 </form>
 <script>
+    // KHAI BÁO BIẾN TOÀN CỤC ! 
+    var containerForm=document.forms['container-form'];
     var courseId;
     var deleteForm=document.forms['delete-course-form'];
-
+    var checkboxAll=document.querySelector('#checkbox-all');
+    var courseItemCheckboxes=document.querySelectorAll('input[name="courseIds[]"]');
     var deleteModal = document.getElementById('delete-course-modal');
+    var checkAllSubmitBtn=document.querySelector('.check-all-submit-btn');
     // Nút xóa bỏ trong hộp thoại modal
     var btnDeleteCourse=document.getElementById('btn-delete-course');
 
+
+    // Xử lí các sự kiện
+
+    // Xuất hiện modal khi click btn "Xóa"
     deleteModal.addEventListener('show.bs.modal', function (event) {
         // Nút "Xóa" vừa được bấm
         var button = event.relatedTarget;
@@ -87,4 +118,45 @@
         deleteForm.action='/courses/' + courseId + '?_method=DELETE';
         deleteForm.submit();
     };
+    //1. Bấm nút tất cả thì mọi checkbox đều true
+    checkboxAll.addEventListener( 'change' ,function(){
+      var isChecked=this.checked;
+      
+      courseItemCheckboxes.forEach(checkBox=>checkBox.checked=isChecked);
+      renderCheckAllSubmitBtn();
+    });
+    //2. Một checkbox false thì checkAll false 
+    courseItemCheckboxes.forEach(checkbox=>{
+      checkbox.addEventListener('change', ()=>{
+        var totalCouint=courseItemCheckboxes.length;
+        var checkedCount=document.querySelectorAll('input[name="courseIds[]"]:checked').length;
+        var isCheckedAll=totalCouint>0 && totalCouint===checkedCount;
+        checkboxAll.checked=isCheckedAll;
+        renderCheckAllSubmitBtn();
+      })
+    });
+    //Tích vào checkBox thì Button Thực hiện enable
+    function renderCheckAllSubmitBtn(){
+      var checkedCount=document.querySelectorAll('input[name="courseIds[]"]:checked').length;
+      if (checkedCount){
+        checkAllSubmitBtn.classList.remove('disabled');
+      }
+      else {
+        checkAllSubmitBtn.classList.add('disabled');
+      }
+    }
+    // Khi nút "Thưc hiện" disabled thì ko được submit 
+    containerForm.addEventListener('submit', (e)=>{
+      
+      console.log('Submit is clicked');
+      // khi nào ít nhất 1 checked nó mới được submit !
+      var isSubmittable=!checkAllSubmitBtn.classList.contains('disabled');
+      console.log(isSubmittable);
+      if (!isSubmittable){
+        e.preventDefault();
+      }
+    })
+    // màn hình console chrome ! 
+    console.log(checkAllSubmitBtn);
+    console.log(containerForm);
 </script>
