@@ -23,6 +23,7 @@
     "watch": "sass --watch src/resources/scss/app.scss:src/public/css/app.css"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.13.2",
     "express": "^5.3.0",
     "express-handlebars": "^9.0.2",
     "method-override": "^3.0.0",

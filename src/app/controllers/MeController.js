@@ -2,11 +2,17 @@ const Course=require('../models/Course');
 const {mongooseToObject, multiMongooseToObject}=require('../../util/mongoose');
 const slugify = require('slugify');
 class MeController {
-    
     // [GET] /me/stored/courses
     storedCourses(req, res, next){
+        
+        let courseQuery=Course.find({deletedAt : null});
 
-        Promise.all([Course.find({deletedAt : null}), 
+        if (Object.hasOwn(req.query, '_sort')){
+            courseQuery=courseQuery.sort({
+                [req.query.column]: req.query.type,
+            })
+        }
+        Promise.all([courseQuery, 
             Course.countDocuments({
             deletedAt: {$ne: null},})
         ])
