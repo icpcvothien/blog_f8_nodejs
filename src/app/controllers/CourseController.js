@@ -41,7 +41,7 @@ class CourseController {
         course.save()
             .then(savedCourse => {
                 console.log('Đã lưu khóa học:', savedCourse._id);
-                res.send('Đã lưu vào CSDL');
+                res.redirect('/me/stored/courses');
             })
             .catch(next);
     }

@@ -1,6 +1,8 @@
 <div class="mt-4">
     <div>
-      <a href="/me/trash/courses">Thùng rác</a>
+      {{#if trashCount}}
+      <a href="/me/trash/courses">Thùng rác [{{this.trashCount}}] </a>
+      {{/if}}
       <h3>KHÓA HỌC CỦA TÔI</h3>
       
     </div>
@@ -23,6 +25,7 @@
         <td>{{this.createdAt}}</td>
         <td>
             <a href="/courses/{{this._id}}/edit" class="btn btn-link">Sửa</a>
+            {{!-- nút xóa giả --}}
             <a  href="" class="btn btn-link" 
             data-id="{{this._id}}" data-bs-toggle="modal" data-bs-target="#delete-course-modal" >Xóa</a>
         </td>
@@ -58,14 +61,16 @@
   </div>
 </div>
 
-{{!-- delete hidden form --}}
+{{!-- delete form --}}
 <form name="delete-course-form" method="post" >
 
 </form>
 <script>
     var courseId;
     var deleteForm=document.forms['delete-course-form'];
+
     var deleteModal = document.getElementById('delete-course-modal');
+    // Nút xóa bỏ trong hộp thoại modal
     var btnDeleteCourse=document.getElementById('btn-delete-course');
 
     deleteModal.addEventListener('show.bs.modal', function (event) {
