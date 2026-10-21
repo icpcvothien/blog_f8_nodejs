@@ -1,8 +1,8 @@
 const express = require('express');
-const morgan = require('morgan');
-const handlebars = require('express-handlebars');
+const morgan = require('morgan'); // log 
+const handlebars = require('express-handlebars'); // render template
 const path=require('path');
-const methodOverride=require('method-override');
+const methodOverride=require('method-override'); // giả lập request PUT, PATCH, DELETE từ form HTML
 const sortMiddleware=require('./app/middlewares/SortMiddleware');
 
 const app = express();
@@ -16,6 +16,7 @@ db.connect();
 // cấu hình cho template
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
+
 app.use(express.json());
 app.use(methodOverride('_method'));
 

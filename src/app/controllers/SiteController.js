@@ -4,7 +4,7 @@ class SiteController {
     
     // get home 
     async index(req, res, next){
-        Course.find({})
+        Course.find({ deletedAt: null })
         .then(courses=> {
             // fix bug: document  to normal object
             

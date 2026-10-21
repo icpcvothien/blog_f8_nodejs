@@ -1,6 +1,5 @@
 const Course=require('../models/Course');
-const {mongooseToObject, multiMongooseToObject}=require('../../util/mongoose');
-const slugify = require('slugify');
+const {multiMongooseToObject}=require('../../util/mongoose');
 class MeController {
     // [GET] /me/stored/courses
     storedCourses(req, res, next){

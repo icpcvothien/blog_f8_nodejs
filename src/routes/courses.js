@@ -11,7 +11,7 @@ router.put('/:id', courseController.update); // sua
 router.delete('/:id', courseController.destroy); // xoa
 router.delete('/:id/force', courseController.forceDestroy); // xoa
 router.patch('/:id/restore', courseController.restore); // sửa 1 trường
-router.get('/:slug',courseController.show);
+router.get('/:id',courseController.show);
 
 
 module.exports=router;
